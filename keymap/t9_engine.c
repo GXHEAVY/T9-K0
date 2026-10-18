@@ -680,7 +680,8 @@ static bool press_typing(t9_engine_t *e, t9_key_t key, uint16_t code, uint32_t n
                 complete_key(e);
                 return true;
             }
-            /* fall through: without a completion Enter is any other key */
+            /* Without a completion, Enter is handled like any other key. */
+            /* fall through */
         case T9_KEY_OTHER:
             if (!composing && t9_output_count(&e->out) == 0) {
                 e->spelling = false;
