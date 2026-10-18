@@ -1,0 +1,103 @@
+# Dial navigation in all three modes, with insertions/corrections inside text.
+# Word boundaries here are the simulator's start/end-of-word model; host apps
+# determine actual Ctrl/Option-arrow boundaries. Cursor offsets count bytes.
+
+0 press 4
+5 release 4
+10 press 6
+15 release 6
+20 press 6
+25 release 6
+30 press 3
+35 release 3
+40 press 0
+45 release 0
+50 press 4
+55 release 4
+60 press 6
+65 release 6
+70 press 6
+75 release 6
+80 press 3
+85 release 3
+90 press NEXT
+95 release NEXT
+100 press DOT
+105 release DOT
+110 expect good home
+110 expect-cursor 9
+110 press DIAL_LEFT
+115 release DIAL_LEFT
+120 expect-cursor 5
+120 press DIAL_RIGHT
+125 release DIAL_RIGHT
+130 expect-cursor 9
+130 press DIAL_LEFT
+135 release DIAL_LEFT
+140 expect-cursor 5
+140 press MODE
+145 release MODE
+150 press DIAL_RIGHT
+155 release DIAL_RIGHT
+160 expect-cursor 6
+160 press 2
+165 release 2
+170 press 2
+175 release 2
+180 press 2
+185 release 2
+190 expect good hcome
+190 expect-cursor 7
+190 press DIAL_LEFT
+195 release DIAL_LEFT
+200 expect-cursor 6
+200 press DIAL_RIGHT
+205 release DIAL_RIGHT
+210 expect-cursor 7
+210 press DELETE
+215 release DELETE
+220 expect good home
+220 expect-cursor 6
+220 press MODE
+225 release MODE
+230 press DIAL_LEFT
+235 release DIAL_LEFT
+240 press DIAL_RIGHT
+245 release DIAL_RIGHT
+250 expect-cursor 6
+250 expect good home
+250 press MODE
+255 release MODE
+260 press DIAL_RIGHT
+265 release DIAL_RIGHT
+270 expect-cursor 9
+270 press DIAL_LEFT
+275 release DIAL_LEFT
+280 press DIAL_LEFT
+285 release DIAL_LEFT
+290 expect-cursor 0
+290 press 4
+295 release 4
+300 press 1
+305 release 1
+310 press 6
+315 release 6
+320 press 0
+325 release 0
+330 expect i'm good home
+330 expect-cursor 4
+330 press DIAL_RIGHT
+335 release DIAL_RIGHT
+340 expect-cursor 8
+340 press DIAL_LEFT
+345 release DIAL_LEFT
+350 press 4
+355 release 4
+360 press 1
+365 release 1
+370 press 6
+375 release 6
+380 press 0
+385 release 0
+390 expect i'm i'm good home
+390 expect-cursor 8

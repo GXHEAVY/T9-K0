@@ -1,0 +1,500 @@
+# t9 scenario script: deterministic paragraph replayed by host/t9_scenario_test
+# and by the simulator (t9_simulator --script host/scenario_paragraph.t9).
+#
+# Format, one item per line:
+#   <time_ms> press <KEY>
+#   <time_ms> release <KEY>
+#   <time_ms> expect <text>
+#   # comment            (blank lines are ignored too)
+# <time_ms> is absolute and non-decreasing. Before each line the replayer calls
+# t9_tick(time_ms); press / release call t9_key_press / t9_key_release with it.
+# KEY is one of 0-9 NEXT PREV DOT DELETE CANCEL SPELL CAPS MODE ENTER TAB
+# FN_ENTER. ENTER is T9_KEY_COMPLETE and TAB T9_KEY_OTHER, with the host's
+# Enter / Tab passthrough code. FN_ENTER is the completions toggle (Fn+Enter):
+# its press calls t9_set_completions with the opposite setting, its release
+# does nothing. Completions start off, as after t9_init. A completion in progress shows as `base[suffix]`.
+# expect: after all queued output is applied, the whole host text equals the
+# rest of the line after "expect " verbatim. Trailing whitespace would be
+# significant, so expectations are placed where the text does not end in one.
+# Keys the engine does not handle (t9_key_press returns false) go to the host.
+#
+# Engine config assumed: multitap_timeout_ms 800, long_press_ms 500, fixture
+# dictionary host/t9_fixture_words.txt. Taps are held 40 ms, 150 ms apart;
+# SPELL is held 520 ms (a hold starts a spelling in T9); "wait" gaps of
+# 1000 ms let a multitap letter time out.
+
+# completions start off (T9_DEFAULT_COMPLETIONS); FN_ENTER turns them on
+900 press FN_ENTER
+940 release FN_ENTER
+
+# Hello: caps once, then T9
+1000 press CAPS
+1040 release CAPS
+1150 press 4
+1190 release 4
+1300 press 3
+1340 release 3
+1450 press 5
+1490 release 5
+1600 press 5
+1640 release 5
+1750 press 6
+1790 release 6
+1900 expect Hello
+1900 press 0
+1940 release 0
+
+# Zorbak is not in the dictionary: T9 attempt misses, capitalise, spell it
+2050 press 9
+2090 release 9
+2200 press 6
+2240 release 6
+2350 press 7
+2390 release 7
+2500 expect Hello wor[ld]
+2500 press 2
+2540 release 2
+2650 expect Hello wor[ld]
+2650 press CAPS
+2690 release CAPS
+2800 expect Hello Wor[ld]
+2800 press SPELL
+3320 release SPELL
+3430 press 9
+3470 release 9
+3580 press 9
+3620 release 9
+3730 press 9
+3770 release 9
+3880 press 9
+3920 release 9
+4030 press 6
+4070 release 6
+4180 press 6
+4220 release 6
+4330 press 6
+4370 release 6
+4480 press 7
+4520 release 7
+4630 press 7
+4670 release 7
+4780 press 7
+4820 release 7
+4930 press 2
+4970 release 2
+5080 press 2
+5120 release 2
+6230 press 2
+6270 release 2
+6380 press 5
+6420 release 5
+6530 press 5
+6570 release 5
+6680 expect Hello Zorbak
+6680 press 1
+6720 release 1
+6830 press NEXT
+6870 release NEXT
+6980 expect Hello Zorbak,
+6980 press 0
+7020 release 0
+
+# I: caps once on a one-letter word; `in` outranks `i`, so the completion shows
+7130 press CAPS
+7170 release CAPS
+7280 press 4
+7320 release 4
+7430 expect Hello Zorbak, I[n]
+7430 press 0
+7470 release 0
+
+# don't: apostrophe is the fifth punctuation, then t without spaces (`the` is the top completion of 8)
+7580 press 3
+7620 release 3
+7730 press 6
+7770 release 6
+7880 press 6
+7920 release 6
+8030 expect Hello Zorbak, I don
+8030 press 1
+8070 release 1
+8180 press 1
+8220 release 1
+8330 press 1
+8370 release 1
+8480 press 1
+8520 release 1
+8630 press 1
+8670 release 1
+8780 expect Hello Zorbak, I don'
+8780 press 8
+8820 release 8
+8930 expect Hello Zorbak, I don't[he]
+8930 press 0
+8970 release 0
+
+# think it's a good idea
+9080 press 8
+9120 release 8
+9230 press 4
+9270 release 4
+9380 press 4
+9420 release 4
+9530 press 6
+9570 release 6
+9680 press 5
+9720 release 5
+9830 press 0
+9870 release 0
+9980 press 4
+10020 release 4
+10130 press 8
+10170 release 8
+10280 press 1
+10320 release 1
+10430 press NEXT
+10470 release NEXT
+10580 press NEXT
+10620 release NEXT
+10730 press NEXT
+10770 release NEXT
+10880 press NEXT
+10920 release NEXT
+11030 press 7
+11070 release 7
+11180 expect Hello Zorbak, I don't think it's[o]
+11180 press 0
+11220 release 0
+11330 press 2
+11370 release 2
+11480 press 0
+11520 release 0
+11630 press 4
+11670 release 4
+11780 press 6
+11820 release 6
+11930 press 6
+11970 release 6
+12080 press 3
+12120 release 3
+12230 press 0
+12270 release 0
+12380 press 4
+12420 release 4
+12530 press 3
+12570 release 3
+12680 press 3
+12720 release 3
+12830 press 2
+12870 release 2
+12980 expect Hello Zorbak, I don't think it's a good idea
+12980 press 0
+13020 release 0
+
+# to: toe was meant, `today` outranks it; delete keeps the same whole word
+13130 press 8
+13170 release 8
+13280 press 6
+13320 release 6
+13430 press 3
+13470 release 3
+13580 expect Hello Zorbak, I don't think it's a good idea tod[ay]
+13580 press DELETE
+13620 release DELETE
+13730 expect Hello Zorbak, I don't think it's a good idea to[day]
+13730 press 0
+13770 release 0
+
+# go: cycle back from in[to] through ho[me] to go[od]
+13880 press 4
+13920 release 4
+14030 press 6
+14070 release 6
+14180 expect Hello Zorbak, I don't think it's a good idea to in[to]
+14180 press PREV
+14220 release PREV
+14240 press PREV
+14280 release PREV
+14330 expect Hello Zorbak, I don't think it's a good idea to go[od]
+14330 press 0
+14370 release 0
+
+# home: good typed, cancelled, retyped and cycled
+14480 press 4
+14520 release 4
+14630 press 6
+14670 release 6
+14780 press 6
+14820 release 6
+14930 press 3
+14970 release 3
+15080 expect Hello Zorbak, I don't think it's a good idea to go good
+15080 press CANCEL
+15120 release CANCEL
+15230 press 4
+15270 release 4
+15380 press 6
+15420 release 6
+15530 press 6
+15570 release 6
+15680 press 3
+15720 release 3
+15830 press NEXT
+15870 release NEXT
+15980 expect Hello Zorbak, I don't think it's a good idea to go home
+15980 press 0
+16020 release 0
+
+# now: an extra digit misses and is ignored
+16130 press 6
+16170 release 6
+16280 press 6
+16320 release 6
+16430 press 9
+16470 release 9
+16580 press 3
+16620 release 3
+16730 expect Hello Zorbak, I don't think it's a good idea to go home now
+16730 press 1
+16770 release 1
+16880 expect Hello Zorbak, I don't think it's a good idea to go home now.
+16880 press 0
+16920 release 0
+
+# Call Anna: caps once; Anna is spelled with a repeated n
+17030 press CAPS
+17070 release CAPS
+17180 press 2
+17220 release 2
+17330 press 2
+17370 release 2
+17480 press 5
+17520 release 5
+17630 press 5
+17670 release 5
+17780 expect Hello Zorbak, I don't think it's a good idea to go home now. Call
+17780 press 0
+17820 release 0
+17930 press CAPS
+17970 release CAPS
+18080 press SPELL
+18600 release SPELL
+18710 press 2
+18750 release 2
+18860 press 6
+18900 release 6
+19010 press 6
+19050 release 6
+20160 press 6
+20200 release 6
+20310 press 6
+20350 release 6
+20460 press 2
+20500 release 2
+20610 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna
+20610 press 0
+20650 release 0
+# Select exact-only at with completions off.
+20660 press FN_ENTER
+20665 release FN_ENTER
+20760 press 2
+20800 release 2
+20910 press 8
+20950 release 8
+
+# 4: long press types the digit and leaves no tap letter
+21060 press 0
+21100 release 0
+21110 press FN_ENTER
+21115 release FN_ENTER
+21210 press 4
+21910 release 4
+22220 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4
+22220 press 1
+22260 release 1
+22370 press NEXT
+22410 release NEXT
+22520 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4,
+22520 press 0
+22560 release 0
+
+# she's well-known in the hood
+# she has no longer extension in the fixture dictionary.
+22570 press FN_ENTER
+22575 release FN_ENTER
+22670 press 7
+22710 release 7
+22820 press 4
+22860 release 4
+22970 press 3
+23010 release 3
+23120 press 1
+23160 release 1
+23170 press FN_ENTER
+23175 release FN_ENTER
+23270 press NEXT
+23310 release NEXT
+23420 press NEXT
+23460 release NEXT
+23570 press NEXT
+23610 release NEXT
+23720 press NEXT
+23760 release NEXT
+23870 press 7
+23910 release 7
+24020 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's[o]
+24020 press 0
+24060 release 0
+24170 press 9
+24210 release 9
+24320 press 3
+24360 release 3
+24470 press 5
+24510 release 5
+24620 press 5
+24660 release 5
+24770 press 1
+24810 release 1
+24920 press 1
+24960 release 1
+25070 press 1
+25110 release 1
+25220 press 1
+25260 release 1
+25370 press 1
+25410 release 1
+25520 press 1
+25560 release 1
+25670 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-
+25670 press 5
+25710 release 5
+25820 press 6
+25860 release 6
+25970 press 6
+26010 release 6
+26120 press 9
+26160 release 9
+26270 press 6
+26310 release 6
+26420 press 0
+26460 release 0
+26570 press 4
+26610 release 4
+26720 press 6
+26760 release 6
+26870 press 0
+26910 release 0
+27020 press 8
+27060 release 8
+27170 press 4
+27210 release 4
+27320 press 3
+27360 release 3
+27470 press 0
+27510 release 0
+27620 press 4
+27660 release 4
+27770 press 6
+27810 release 6
+27920 press 6
+27960 release 6
+28070 press 3
+28110 release 3
+28220 press NEXT
+28260 release NEXT
+28370 press NEXT
+28410 release NEXT
+28520 press NEXT
+28560 release NEXT
+28670 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood
+28670 press 1
+28710 release 1
+28820 press 0
+28860 release 0
+
+# GOOD luck!: caps lock for one word, ! accepted with DOT
+28970 press CAPS
+29010 release CAPS
+29120 press CAPS
+29160 release CAPS
+29270 press 4
+29310 release 4
+29420 press 6
+29460 release 6
+29570 press 6
+29610 release 6
+29720 press 3
+29760 release 3
+29870 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD
+29870 press 0
+29910 release 0
+30020 press CAPS
+30060 release CAPS
+30170 press 5
+30210 release 5
+30320 press 8
+30360 release 8
+30470 press 2
+30510 release 2
+30620 press 5
+30660 release 5
+30770 press 1
+30810 release 1
+30920 press NEXT
+30960 release NEXT
+31070 press NEXT
+31110 release NEXT
+31220 press NEXT
+31260 release NEXT
+31370 press DOT
+31410 release DOT
+31520 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD luck!
+
+# and / good: completions off (Fn+Enter) mid-word shows the base only, Enter
+# then accepts and passes through; back on, the suffix returns in place
+31670 press 0
+31710 release 0
+31820 press 2
+31860 release 2
+31970 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD luck! a[nd]
+31970 press FN_ENTER
+32010 release FN_ENTER
+32120 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD luck! a
+32120 press 6
+32160 release 6
+32270 press 3
+32310 release 3
+32420 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD luck! and
+32420 press ENTER
+32460 release ENTER
+32570 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD luck! and<ENTER>
+32570 press FN_ENTER
+32610 release FN_ENTER
+32720 press 4
+32760 release 4
+32870 press 6
+32910 release 6
+33020 press 6
+33060 release 6
+33170 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD luck! and<ENTER>goo[d]
+33170 press FN_ENTER
+33210 release FN_ENTER
+33320 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD luck! and<ENTER>goo
+33320 press FN_ENTER
+33360 release FN_ENTER
+33470 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD luck! and<ENTER>goo[d]
+33470 press ENTER
+33510 release ENTER
+33620 press 5
+33660 release 5
+33770 press 8
+33810 release 8
+33920 press 2
+33960 release 2
+34070 press 5
+34110 release 5
+34220 press 1
+34260 release 1
+34370 press DOT
+34410 release DOT
+34520 expect Hello Zorbak, I don't think it's a good idea to go home now. Call Anna at 4, she's well-known in the hood. GOOD luck! and<ENTER>good luck.

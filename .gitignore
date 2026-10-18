@@ -1,0 +1,16 @@
+qmk_firmware/
+.venv/
+.venv-dict/
+.venv-dev/
+__pycache__/
+.ruff_cache/
+*.bin
+host/build/
+host/t9_fixture_table.h
+host/t9_fixture_packed.h
+dictionary/sources/
+.vscode/
+
+# Generated dictionary diagnostics (recreate with make dict / make fetch-sources)
+dictionary/report.md
+dictionary/report_sources.md

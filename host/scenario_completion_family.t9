@@ -1,0 +1,56 @@
+# Production dictionary, suggestions off: keyboard -> keyboards.
+0 press 5
+10 release 5
+20 press 3
+30 release 3
+40 press 9
+50 release 9
+60 press 2
+70 release 2
+80 press 6
+90 release 6
+100 expect-preview keybo>ard
+110 press ENTER
+120 release ENTER
+130 expect-preview keyboard>s
+140 press 0
+150 release 0
+160 expect keyboard 
+
+# Enter again takes the final extension and finishes with a space.
+200 press 5
+210 release 5
+220 press 3
+230 release 3
+240 press 9
+250 release 9
+260 press 2
+270 release 2
+280 press 6
+290 release 6
+300 press ENTER
+310 release ENTER
+320 expect-preview keyboard>s
+330 press ENTER
+340 release ENTER
+350 expect keyboard keyboards 
+
+# Delete after expansion removes one filled letter; dot keeps the current base.
+400 press 5
+410 release 5
+420 press 3
+430 release 3
+440 press 9
+450 release 9
+460 press 2
+470 release 2
+480 press 6
+490 release 6
+500 press ENTER
+510 release ENTER
+520 press DELETE
+530 release DELETE
+540 expect-preview keyboar>d
+550 press DOT
+560 release DOT
+570 expect keyboard keyboards keyboar

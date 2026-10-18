@@ -1,0 +1,80 @@
+# Hold phone 1, tap 2/3 to cycle one wrapper. Side switches replace it.
+# Exercise both an early chord and a chord after the literal 1 was emitted.
+0 press 1
+100 press 2
+110 release 2
+120 expect-preview (
+120 press 2
+130 release 2
+140 expect-preview [
+140 press 3
+150 release 3
+160 expect-preview )
+160 press 3
+170 release 3
+180 release 1
+190 expect ]
+
+200 press 1
+700 expect ]1
+710 press 2
+720 release 2
+730 press 2
+740 release 2
+750 press 2
+760 release 2
+770 press 2
+780 release 2
+790 expect-preview <
+800 release 1
+810 expect ]<
+
+# Release 1 before the chord key, then type normally inside a bracket pair.
+900 press 1
+910 press 2
+920 release 1
+930 release 2
+940 expect ]<(
+950 press 8
+960 release 8
+970 press 4
+980 release 4
+990 press 3
+1000 release 3
+1010 press DOT
+1020 release DOT
+1030 press 1
+1040 press 3
+1050 release 3
+1060 release 1
+2000 expect ]<(the)
+
+# Symbol groups use four characters each and can replace an emitted 1.
+2100 press 1
+2600 expect ]<(the)1
+2610 press 4
+2620 release 4
+2630 expect-preview :
+2630 press 4
+2640 release 4
+2650 expect-preview ;
+2650 press 4
+2660 release 4
+2670 expect-preview |
+2670 press 4
+2680 release 4
+2690 expect-preview ~
+2690 press 5
+2700 release 5
+2710 expect-preview +
+2710 press 5
+2720 release 5
+2730 expect-preview `
+2730 press 5
+2740 release 5
+2750 expect-preview @
+2750 press 5
+2760 release 5
+2770 expect-preview \
+2780 release 1
+2800 expect ]<(the)\

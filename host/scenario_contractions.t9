@@ -1,0 +1,77 @@
+# Single-1 contractions against the production dictionary (make test).
+# Run with --pace 50 to exercise edits while host output lags behind input.
+# Repeated 1 selects ordinary punctuation; completions begin off.
+
+0 press 4
+5 release 4
+10 press 1
+15 release 1
+20 expect-preview i.
+20 press 6
+25 release 6
+30 expect-preview i'm
+30 press 0
+35 release 0
+40 press 4
+45 release 4
+50 press 1
+55 release 1
+60 press 8
+65 release 8
+70 press 3
+75 release 3
+80 expect-preview i've
+80 press 0
+85 release 0
+90 press 9
+95 release 9
+100 press 6
+105 release 6
+110 press 6
+115 release 6
+120 press 1
+125 release 1
+130 press 8
+135 release 8
+140 expect-preview won't
+140 press 0
+145 release 0
+150 expect i'm i've won't 
+150 press 4
+155 release 4
+160 press 1
+165 release 1
+170 press 1
+175 release 1
+180 press 8
+185 release 8
+190 expect-preview t
+190 press 0
+195 release 0
+200 expect i'm i've won't i,t 
+200 press FN_ENTER
+205 release FN_ENTER
+210 press 4
+215 release 4
+220 press 1
+225 release 1
+230 press 8
+235 release 8
+240 expect-preview i'v[e]
+240 press ENTER
+245 release ENTER
+250 expect i'm i've won't i,t i've 
+250 press 4
+255 release 4
+260 press 1
+265 release 1
+270 press 6
+275 release 6
+280 press DELETE
+285 release DELETE
+290 expect-preview i.
+290 press DELETE
+295 release DELETE
+300 press CANCEL
+305 release CANCEL
+310 expect i'm i've won't i,t i've 

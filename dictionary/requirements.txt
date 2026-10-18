@@ -1,0 +1,8 @@
+# pinned with `pip freeze` after `pip install wordfreq==3.1.1` on CPython 3.14.7 (macOS arm64)
+ftfy==6.3.1
+langcodes==3.5.1
+locate==1.1.1
+msgpack==1.2.3
+regex==2026.9.29
+wcwidth==0.9.2
+wordfreq==3.1.1

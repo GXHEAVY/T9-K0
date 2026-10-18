@@ -1,0 +1,5 @@
+* text=auto eol=lf
+# Spaces at the end of an expectation are part of the simulated host text.
+*.t9 whitespace=-blank-at-eol
+keymap/t9_dictionary_data.h linguist-generated=true
+dictionary/words_en.tsv linguist-generated=true
