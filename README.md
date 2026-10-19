@@ -10,6 +10,11 @@ spelling, punctuation, editing shortcuts and a standard numpad mode.
 [Development and simulator](DEVELOPING.md) ·
 [Dictionary](dictionary/README.md) · [Licences](LICENSES.md)
 
+Download the [v0.1.0 firmware](https://github.com/GXHEAVY/T9-K0/releases/download/v0.1.0/T9-K0-v0.1.0-firmware.zip)
+or find the matching source and checksums on the [release page](https://github.com/GXHEAVY/T9-K0/releases/tag/v0.1.0).
+Read the [flash layout](#flash-layout) before installing; the firmware archive
+includes installation instructions and licence notices.
+
 ## How typing works
 
 In T9 mode, digits use **phone order**, not the printed numpad order:
