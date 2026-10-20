@@ -92,8 +92,8 @@ retains its punctuation/literal-digit behavior: plain `1` cycles `.` `,` `?` `!`
 | p: mute | word    |         |         | word    |
 +---------+---------+---------+---------+---------+
 | [M1]    | [Num]   | [/]     | [*]     | [-]     |
-| tap:MC1 | mode    | tap:caps| next    | delete  |
-| h:chords| h: NumLk| h:chords| cand    | last    |
+| tap:MC1 | change  | tap:caps| next    | delete  |
+| h:chords| mode    | h:chords| cand    | last    |
 +---------+---------+---------+---------+---------+
 | [M2]    | [7]     | [8]     | [9]     | [+]     |
 | macro   | 1       | 2 abc   | 3 def   | h: spell|
@@ -129,8 +129,8 @@ letter so the same key starts a new one. Everything else matches T9 mode.
 | p: mute | word    |         |         | word    |
 +---------+---------+---------+---------+---------+
 | [M1]    | [Num]   | [/]     | [*]     | [-]     |
-| tap:MC1 | mode    | tap:caps| next    | delete  |
-| h:chords| h: NumLk| h:chords| punct   | last    |
+| tap:MC1 | change  | tap:caps| next    | delete  |
+| h:chords| mode    | h:chords| punct   | last    |
 +---------+---------+---------+---------+---------+
 | [M2]    | [7]     | [8]     | [9]     | [+]     |
 | macro   | 1       | 2 abc   | 3 def   | next    |

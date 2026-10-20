@@ -36,7 +36,7 @@ LAYERS = {
         "Tab": ["Tab"],
         "Bksp": ["delete", "word"],
         "M1": ["tap:MC1", "h:chords"],
-        "Num": ["mode", "h: NumLk"],
+        "Num": ["change", "mode"],
         "/": ["tap:caps", "h:chords"],
         "*": ["next", "cand"],
         "-": ["delete", "last"],
@@ -65,7 +65,7 @@ LAYERS = {
         "Tab": ["Tab"],
         "Bksp": ["delete", "word"],
         "M1": ["tap:MC1", "h:chords"],
-        "Num": ["mode", "h: NumLk"],
+        "Num": ["change", "mode"],
         "/": ["tap:caps", "h:chords"],
         "*": ["next", "punct"],
         "-": ["delete", "last"],
@@ -86,6 +86,9 @@ LAYERS = {
         "Fn": ["hold: FN"],
         "0": ["accept + space", "hold: 0"],
         ".": ["accept", "no space"],
+    },
+    "numpad": {
+        "Num": ["change", "mode"],
     },
     "slash": {
         "knob": ["<Up/Dn>", "p: quit"],

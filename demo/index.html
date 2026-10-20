@@ -1,0 +1,28 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-2.0-or-later -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try the T9-K0 keypad in your browser, or watch predictive typing, suggestions, symbol chords, shortcuts and function-layer scenes.">
+  <meta name="color-scheme" content="light">
+  <title>T9 K0 engine demo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f4f2ec; }
+    main { max-width: 1160px; margin: auto; padding: 32px 40px; }
+    t9-demo { display: block; }
+    @media (max-width: 650px) { main { padding: 16px; } }
+  </style>
+  <script src="trace.js" defer></script>
+  <script src="engine-wasm.js" defer></script>
+  <script src="live-engine.js" defer></script>
+  <script src="t9-demo.js" defer></script>
+</head>
+<body>
+  <main>
+    <t9-demo loop aria-label="Animated demonstration of the T9-K0 keyboard"></t9-demo>
+    <noscript>This animation needs JavaScript. The demo shows predictive typing, dial selection, staged completion, word suggestions, symbol chords, editing shortcuts and Fn controls.</noscript>
+  </main>
+</body>
+</html>

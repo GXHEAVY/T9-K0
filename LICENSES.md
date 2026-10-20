@@ -9,7 +9,8 @@ nonstandard sync-timer terms, are preserved with the release materials.
 
 | Material | Licence |
 |---|---|
-| Project source code: `keymap/`, `host/`, `dictionary/*.py`, `scripts/`, `tests/`, `keymap_grid.py`, `Makefile` | GPL-2.0-or-later |
+| Project source code: `keymap/`, `host/`, `demo/` source, `dictionary/*.py`, `scripts/`, `tests/`, `keymap_grid.py`, `Makefile` | GPL-2.0-or-later |
+| Browser engine `demo/engine-wasm.js` and recorded `demo/trace.js` | GPL-2.0-or-later code; dictionary-derived data under the terms in section 2 |
 | Generated dictionary data: `dictionary/words_en.tsv`, `keymap/t9_dictionary_data.h` | CC-BY-SA-4.0, with the attributions in section 2 |
 | Firmware binary built from this repository and Keychron's QMK (`*.bin`, `*.hex`, `*.elf`) | Intended distribution: GPL-3.0-only; see sections 4–5 for component notices and audit scope |
 

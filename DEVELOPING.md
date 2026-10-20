@@ -27,6 +27,137 @@ Commands run from the repository root.
 The engine has no QMK dependency or heap allocation. It plans edits before
 committing them to its bounded output queue; QMK handles pacing and host reports.
 
+## Animated browser demo
+
+Open `demo/index.html` directly in a browser. The page has no build step, network
+requests or external dependencies. It starts paused on the original legends;
+Play briefly holds the original legends before remapping, then loops through seven scenes:
+prediction (`hello world`), dial selection (`home`), staged completion
+(`keyboards`), word suggestions (`goods` versus `good`), symbol chords,
+editing/application shortcuts and Fn controls. The keyboard uses the physical
+K0 Max layout with phone-order T9 legends; small corner digits show printed keycaps.
+The candidate panel is an explanatory overlay, not a display on the hardware.
+The input sequence shows recorded key presses and dial turns for the current
+scene, including Enter presses rather than digits filled internally by completion.
+Two presentation frames precede every scene: original numpad legends, then a
+slide in from the right to the T9 assignments. The original top row uses ○ △ □ ×, mapped
+to Esc, Del, Tab and Backspace. Replay and looping repeat this introduction;
+reduced-motion mode changes the legends without sliding.
+Unchanged legends remain stationary. The original Num key reads `num` over `clear`.
+
+Use the scene buttons to jump to the beginning of
+a scene while keeping playback paused or playing. Enable **Loop this scene** to
+repeat only the selected scene, including when stepping through frames. This
+overrides the component's full-demo looping behavior until unchecked; selecting
+another scene moves the loop to that scene. Every scene includes the legend
+remapping introduction on each repeat. Held phone `1`, `/`, `M1` and `Fn` slide
+in their symbol/shortcut/layer legends; releasing the prefix restores T9 legends.
+Held keys stay highlighted. Scrubbing and reduced-motion playback show the
+selected frame's legends immediately. Unassigned shortcuts show a dash;
+transparent Fn keys retain their base legends.
+
+At a given container width, the readouts, keyboard notes, action preview and
+caption keep the same heights throughout playback. The action preview reserves
+its space while hidden. Long input histories scroll within two rows to keep the
+latest event visible; the candidate area keeps the selected candidate in view.
+Host text has a fixed-height multiline area that wraps long words and spaces,
+with vertical scrolling only when the text exceeds the available lines.
+
+The Suggestions scene toggles Fn+Enter, shows bracketed suffixes in both the
+candidate list and host preview, and compares Enter (whole word plus space) with
+0 (typed portion plus space). Symbol chords demonstrate all four groups, including
+repeated taps to replace a symbol before releasing phone 1.
+
+Recorded scenes **replay recorded states**. `demo/export_trace.c` uses the unchanged production C engine,
+packed dictionary and output queue for text, suggestions and symbol chords.
+Shortcut selections are checked against the production shortcut router. The
+action preview explains their host behavior; it does not operate the browser,
+clipboard or app switcher. Fn lighting/media/connection controls are visual
+illustrations of the documented hardware bindings, not simulated hardware output.
+Fn+Enter uses the engine's real suggestion toggle. T9 and multitap action labels,
+plus Slash and Fn legends, are
+generated from the shared tables in `keymap_grid.py`; keep those tables aligned
+with `keymap/keymap.c`. Assertions verify intermediate and final text results.
+Regenerate after changing prediction, dictionary or layer-map behavior:
+
+```sh
+python3 demo/generate.py
+python3 demo/generate.py --check
+```
+
+Generation requires a C11 compiler (`CC` defaults to `cc`) and Python; viewing
+does not. The check recompiles and compares the recording without changing it.
+Presentation timing is deliberately slower than firmware timing.
+
+Select **Try it** for arbitrary input using the same production engine and packed
+dictionary compiled to WebAssembly. Click/touch keys, hold them for literal digits
+or spelling. Clicking/tapping the knob turns it clockwise; the dial buttons and
+mouse wheel offer both directions. The on-screen knob does not send a knob press.
+The **Hold 1**, **Hold /**, **Hold M1** and **Hold Fn** buttons latch a prefix for
+single-mouse chords; click again to release. Touch also supports simultaneous keys.
+Typing, candidate selection, staged completion, suggestions, symbols, capitalization,
+multitap and numpad mode all use the C engine. Fn+Enter toggles suggestions.
+
+With the keypad focused, keyboard digits use phone order; physical numpad keys
+use their printed positions. Space accepts, Enter completes, Backspace deletes
+the last input, and left/right arrows turn the dial. F holds Fn, M holds M1 and
+N taps Num. Tab remains available for focus navigation; use the on-screen Tab key
+for a shortcut. Native Enter/Space activate a key reached through Tab navigation.
+Leaving the component, hiding the tab or switching modes releases held keys.
+**Reset** clears text and restores the initial engine settings. Switching to a scene pauses live
+input; **Try it** resumes the saved text. Each component has its own WASM instance.
+
+The live host is a local text buffer with cursor movement and basic editing.
+Clipboard, application, media, connection, lighting and bootloader operations
+remain action previews. They do not control the computer or connected hardware.
+The browser adapter in `demo/wasm/bridge.c` maps physical keys to the production
+engine and shortcut router; it does not build the QMK hardware integration.
+Keep its Fn bindings aligned with `keymap/keymap.c`.
+
+`demo/engine-wasm.js` embeds the compiled module so `file://` viewing still works
+without fetch requests. It has no WASI imports, external runtime or heap allocation;
+`demo/wasm/strings.c` supplies the small freestanding string API. Regenerate it
+after engine, dictionary, shortcut or bridge changes with the extracted
+[WASI SDK 34](https://github.com/WebAssembly/wasi-sdk/releases/tag/wasi-sdk-34):
+
+```sh
+export WASI_SDK_PATH=/path/to/wasi-sdk-34.0-your-platform
+python3 demo/build_wasm.py
+python3 demo/build_wasm.py --check
+node demo/test_live.cjs
+```
+
+The Node check needs Node 18+ and compares every recorded engine frame against
+the WASM build, then exercises additional typing modes, navigation, long holds,
+shortcut release order and isolated instances. Viewing needs only a modern
+browser with WebAssembly support. Recorded playback remains available if live
+engine initialization fails.
+
+To embed the demo, copy `trace.js`, `engine-wasm.js`, `live-engine.js` and
+`t9-demo.js` from `demo/` together and use:
+
+```html
+<script src="trace.js" defer></script>
+<script src="engine-wasm.js" defer></script>
+<script src="live-engine.js" defer></script>
+<script src="t9-demo.js" defer></script>
+<t9-demo loop></t9-demo>
+```
+
+The custom element owns its styling in a shadow root and adapts to its container
+width. Add `autoplay` to start automatically; omit `loop` to stop after the last scene.
+Reduced-motion preferences disable autoplay and transitions; playback remains
+available through the controls. Background tabs suspend playback timers.
+Multiple instances keep independent playback state.
+
+Instances expose `play()`, `pause()`, `restart()`, `setScene(index)` (0–6),
+async `enterLive()` and `leaveLive()`.
+The `t9-frame` event includes `{ scene, frame, text }` for synchronizing a host
+page; live input uses `{ scene: "live", frame: null, text }`.
+`restart()` replays the current scene; scene selection preserves whether
+playback is paused. Keep the source and dictionary notices in `LICENSES.md` when
+redistributing the component and its dictionary-derived recordings.
+
 ## Checks
 
 Host checks require Python 3.12+, Make and a C11 compiler. Formatting

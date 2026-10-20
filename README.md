@@ -78,6 +78,16 @@ contractions, shortcuts and every physical binding.
 
 ## Try it without hardware
 
+For an interactive browser demo, open [demo/index.html](demo/index.html) directly.
+It shows typing, dial selection, completion, suggestions and symbol chords using
+recordings from the real C engine, plus editing shortcuts and Fn-layer legends.
+Choose a scene, loop it, pause, step through frames or change playback speed,
+or select **Try it** to type on the larger on-screen keypad with the real C engine
+and dictionary running locally in WebAssembly. Mouse, touch and keyboard input
+support typing and chords; OS and hardware actions remain previews.
+No server, dependencies or hardware are needed to view it. See the
+[component guide](DEVELOPING.md#animated-browser-demo) to regenerate or embed it.
+
 Requires Python 3.12+, Make and a C11 compiler. Clone the repository, then run
 the host tests and simulator. The included dictionary is sufficient; QMK and
 dictionary source downloads are not needed.
